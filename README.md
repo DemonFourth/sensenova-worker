@@ -1,137 +1,137 @@
-# ?? SenseNova U1 Fast ĞÅÏ¢Í¼Éú³ÉÆ÷
+ï»¿# SenseNova U1 Fast ä¿¡æ¯å›¾ç”Ÿæˆå™¨
 
-»ùÓÚ Cloudflare Workers ²¿ÊğµÄ SenseNova U1 Fast ĞÅÏ¢Í¼Éú³É¾²Ì¬Ò³Ãæ¡£
+åŸºäº Cloudflare Workers éƒ¨ç½²çš„ SenseNova U1 Fast ä¿¡æ¯å›¾ç”Ÿæˆé™æ€é¡µé¢ã€‚
 
-## ? ÌØĞÔ
+## ç‰¹æ€§
 
-- ?? **¾«ÃÀ UI** - ÏÖ´ú»¯½¥±äÉè¼Æ£¬ÏìÓ¦Ê½²¼¾Ö
-- ?? **¶à³ß´çÖ§³Ö** - 11 ÖÖÍ¼Ïñ±ÈÀı¿ÉÑ¡
-- ?? **°²È«´úÀí** - API Key ´æ´¢ÔÚ Cloudflare »·¾³±äÁ¿ÖĞ
-- ? **¿ìËÙ²¿Êğ** - Ò»¼ü²¿Êğµ½ Cloudflare Workers
-- ?? **ÒÆ¶¯¶ËÓÑºÃ** - ÍêÃÀÊÊÅäÊÖ»úºÍ×ÀÃæ
+- **ç²¾ç¾ UI** - ç°ä»£åŒ–æ¸å˜è®¾è®¡ï¼Œå“åº”å¼å¸ƒå±€
+- **å¤šå°ºå¯¸æ”¯æŒ** - 11 ç§å›¾åƒæ¯”ä¾‹å¯é€‰
+- **å®‰å…¨ä»£ç†** - API Key å­˜å‚¨åœ¨ Cloudflare ç¯å¢ƒå˜é‡ä¸­
+- **å¿«é€Ÿéƒ¨ç½²** - ä¸€é”®éƒ¨ç½²åˆ° Cloudflare Workers
+- **ç§»åŠ¨ç«¯å‹å¥½** - å®Œç¾é€‚é…æ‰‹æœºå’Œæ¡Œé¢
 
-## ?? ÏîÄ¿½á¹¹
+## é¡¹ç›®ç»“æ„
 
 `
 sensenova-worker/
-©À©¤©¤ wrangler.toml          # Cloudflare Workers ÅäÖÃ
-©À©¤©¤ README.md              # ±¾ÎÄµµ
-©¸©¤©¤ src/
-    ©À©¤©¤ index.js           # Worker ´úÂë£¨API ´úÀí + ¾²Ì¬ÍĞ¹Ü£©
-    ©¸©¤©¤ index.html         # Ç°¶ËÒ³Ãæ
+â”œâ”€â”€ wrangler.toml          # Cloudflare Workers é…ç½®
+â”œâ”€â”€ README.md              # æœ¬æ–‡æ¡£
+â””â”€â”€ src/
+    â”œâ”€â”€ index.js           # Worker ä»£ç ï¼ˆAPI ä»£ç† + é™æ€æ‰˜ç®¡ï¼‰
+    â””â”€â”€ index.html         # å‰ç«¯é¡µé¢
 `
 
-## ?? ¿ìËÙ²¿Êğ
+## å¿«é€Ÿéƒ¨ç½²
 
-### ·½Ê½Ò»£º±¾µØ²¿Êğ£¨ÍÆ¼ö£©
+### æ–¹å¼ä¸€ï¼šæœ¬åœ°éƒ¨ç½²ï¼ˆæ¨èï¼‰
 
-#### 1. Ç°ÖÃ×¼±¸
+#### 1. å‰ç½®å‡†å¤‡
 
 `ash
-# °²×° Node.js (Èç¹ûÎ´°²×°)
+# å®‰è£… Node.js (å¦‚æœæœªå®‰è£…)
 # https://nodejs.org/
 
-# °²×° Wrangler CLI
+# å®‰è£… Wrangler CLI
 npm install -g wrangler
 
-# µÇÂ¼ Cloudflare
+# ç™»å½• Cloudflare
 wrangler login
 `
 
-#### 2. ²¿Êğ²½Öè
+#### 2. éƒ¨ç½²æ­¥éª¤
 
 `ash
-# ½øÈëÏîÄ¿Ä¿Â¼
+# è¿›å…¥é¡¹ç›®ç›®å½•
 cd sensenova-worker
 
-# ²¿Êğµ½ Cloudflare Workers£¨Ö¸¶¨Ãû³Æ£©
+# éƒ¨ç½²åˆ° Cloudflare Workersï¼ˆæŒ‡å®šåç§°ï¼‰
 wrangler deploy --name your-worker-name
 
-# Ê¾Àı
+# ç¤ºä¾‹
 wrangler deploy --name sensenova-infographic
 `
 
-#### 3. ÅäÖÃ API Key
+#### 3. é…ç½® API Key
 
-²¿Êğºó£¬ÔÚ Cloudflare Dashboard ÖĞÅäÖÃ»·¾³±äÁ¿£º
+éƒ¨ç½²åï¼Œåœ¨ Cloudflare Dashboard ä¸­é…ç½®ç¯å¢ƒå˜é‡ï¼š
 
-1. ·ÃÎÊ [dash.cloudflare.com](https://dash.cloudflare.com)
-2. ½øÈë **Workers & Pages** ¡ú ÕÒµ½ÄãµÄ Worker
-3. µã»÷ **Settings** ¡ú **Variables**
-4. Ìí¼Ó±äÁ¿£º
+1. è®¿é—® [dash.cloudflare.com](https://dash.cloudflare.com)
+2. è¿›å…¥ **Workers & Pages** â†’ æ‰¾åˆ°ä½ çš„ Worker
+3. ç‚¹å‡» **Settings** â†’ **Variables**
+4. æ·»åŠ å˜é‡ï¼š
    - **Variable name**: SENSENOVA_API_KEY
-   - **Value**: ÄãµÄ SenseNova API Key
-5. µã»÷ **Save**
+   - **Value**: ä½ çš„ SenseNova API Key
+5. ç‚¹å‡» **Save**
 
-#### 4. ·ÃÎÊÓ¦ÓÃ
+#### 4. è®¿é—®åº”ç”¨
 
-²¿ÊğÍê³Éºó£¬·ÃÎÊ£º
+éƒ¨ç½²å®Œæˆåï¼Œè®¿é—®ï¼š
 `
 https://your-worker-name.your-subdomain.workers.dev
 `
 
 ---
 
-### ·½Ê½¶ş£ºGitHub + Cloudflare Pages
+### æ–¹å¼äºŒï¼šGitHub + Cloudflare Pages
 
-#### 1. ÍÆËÍµ½ GitHub
+#### 1. æ¨é€åˆ° GitHub
 
 `ash
-# ³õÊ¼»¯ Git£¨Èç¹ûÉĞÎ´³õÊ¼»¯£©
+# åˆå§‹åŒ– Gitï¼ˆå¦‚æœå°šæœªåˆå§‹åŒ–ï¼‰
 git init
 
-# Ìí¼ÓÔ¶³Ì²Ö¿â
+# æ·»åŠ è¿œç¨‹ä»“åº“
 git remote add origin https://github.com/DemonFourth/sensenova-worker.git
 
-# Ìí¼ÓËùÓĞÎÄ¼ş
+# æ·»åŠ æ‰€æœ‰æ–‡ä»¶
 git add .
 
-# Ìá½»
+# æäº¤
 git commit -m "Initial commit: SenseNova U1 Fast Infographic Generator"
 
-# ÍÆËÍ
+# æ¨é€
 git branch -M main
 git push -u origin main
 `
 
-#### 2. Á¬½Ó Cloudflare Pages
+#### 2. è¿æ¥ Cloudflare Pages
 
-1. ·ÃÎÊ [dash.cloudflare.com](https://dash.cloudflare.com)
-2. ½øÈë **Workers & Pages** ¡ú **Create application** ¡ú **Pages**
-3. µã»÷ **Connect to Git**
-4. Ñ¡Ôñ GitHub ²Ö¿â DemonFourth/sensenova-worker
-5. ¹¹½¨ÉèÖÃ£¨Áô¿Õ£¬¾²Ì¬Õ¾µãÎŞĞè¹¹½¨£©£º
-   - **Build command**: £¨Áô¿Õ£©
-   - **Build output directory**: £¨Áô¿Õ£©
-6. µã»÷ **Save and Deploy**
+1. è®¿é—® [dash.cloudflare.com](https://dash.cloudflare.com)
+2. è¿›å…¥ **Workers & Pages** â†’ **Create application** â†’ **Pages**
+3. ç‚¹å‡» **Connect to Git**
+4. é€‰æ‹© GitHub ä»“åº“ DemonFourth/sensenova-worker
+5. æ„å»ºè®¾ç½®ï¼ˆç•™ç©ºï¼Œé™æ€ç«™ç‚¹æ— éœ€æ„å»ºï¼‰ï¼š
+   - **Build command**: ï¼ˆç•™ç©ºï¼‰
+   - **Build output directory**: ï¼ˆç•™ç©ºï¼‰
+6. ç‚¹å‡» **Save and Deploy**
 
-#### 3. ÅäÖÃ»·¾³±äÁ¿
+#### 3. é…ç½®ç¯å¢ƒå˜é‡
 
-ÔÚ Pages ÉèÖÃÖĞÌí¼Ó»·¾³±äÁ¿£º
+åœ¨ Pages è®¾ç½®ä¸­æ·»åŠ ç¯å¢ƒå˜é‡ï¼š
 
-1. ½øÈë Pages ÏîÄ¿ ¡ú **Settings** ¡ú **Environment variables**
-2. Ìí¼Ó±äÁ¿£º
+1. è¿›å…¥ Pages é¡¹ç›® â†’ **Settings** â†’ **Environment variables**
+2. æ·»åŠ å˜é‡ï¼š
    - **Variable**: SENSENOVA_API_KEY
-   - **Value**: ÄãµÄ SenseNova API Key
-3. µã»÷ **Save**
+   - **Value**: ä½ çš„ SenseNova API Key
+3. ç‚¹å‡» **Save**
 
-#### 4. °ó¶¨ Worker£¨¿ÉÑ¡£©
+#### 4. ç»‘å®š Workerï¼ˆå¯é€‰ï¼‰
 
-Èç¹ûĞèÒª×Ô¶¨ÒåÓòÃû»ò¸ü¸´ÔÓµÄºó¶ËÂß¼­£º
+å¦‚æœéœ€è¦è‡ªå®šä¹‰åŸŸåæˆ–æ›´å¤æ‚çš„åç«¯é€»è¾‘ï¼š
 
-1. ½øÈë **Workers & Pages** ¡ú **Create** ¡ú **Worker**
-2. ÉÏ´« src/index.js ´úÂë
-3. ÔÚ Pages ÉèÖÃÖĞ°ó¶¨ Worker
+1. è¿›å…¥ **Workers & Pages** â†’ **Create** â†’ **Worker**
+2. ä¸Šä¼  src/index.js ä»£ç 
+3. åœ¨ Pages è®¾ç½®ä¸­ç»‘å®š Worker
 
 ---
 
-## ?? ÅäÖÃËµÃ÷
+## é…ç½®è¯´æ˜
 
 ### wrangler.toml
 
 `	oml
-# ×îĞ¡ÅäÖÃ£¬ÆäÓàÔÚ Cloudflare Dashboard ÖĞÉèÖÃ
-name = ""  # ²¿ÊğÊ±Í¨¹ı --name Ö¸¶¨
+# æœ€å°é…ç½®ï¼Œå…¶ä½™åœ¨ Cloudflare Dashboard ä¸­è®¾ç½®
+name = ""  # éƒ¨ç½²æ—¶é€šè¿‡ --name æŒ‡å®š
 main = "src/index.js"
 compatibility_date = "2026-05-25"
 
@@ -140,55 +140,55 @@ directory = "src"
 binding = "__STATIC_CONTENT"
 `
 
-### »·¾³±äÁ¿
+### ç¯å¢ƒå˜é‡
 
-| ±äÁ¿Ãû | ËµÃ÷ | ÅäÖÃÎ»ÖÃ |
+| å˜é‡å | è¯´æ˜ | é…ç½®ä½ç½® |
 |--------|------|----------|
-| SENSENOVA_API_KEY | SenseNova API ÃÜÔ¿ | Workers/Pages ¡ú Settings ¡ú Variables |
+| SENSENOVA_API_KEY | SenseNova API å¯†é’¥ | Workers/Pages â†’ Settings â†’ Variables |
 
-### ×Ô¶¨ÒåÓòÃû
+### è‡ªå®šä¹‰åŸŸå
 
-ÔÚ Cloudflare Dashboard ÖĞÅäÖÃ£º
+åœ¨ Cloudflare Dashboard ä¸­é…ç½®ï¼š
 
-1. **Workers**: Workers ¡ú ÄãµÄ Worker ¡ú Triggers ¡ú Custom domains
-2. **Pages**: Pages ¡ú ÄãµÄÏîÄ¿ ¡ú Custom domains
+1. **Workers**: Workers â†’ ä½ çš„ Worker â†’ Triggers â†’ Custom domains
+2. **Pages**: Pages â†’ ä½ çš„é¡¹ç›® â†’ Custom domains
 
 ---
 
-## ?? Ö§³ÖµÄÍ¼Ïñ³ß´ç
+## æ”¯æŒçš„å›¾åƒå°ºå¯¸
 
-| ³ß´ç | ±ÈÀı | ÓÃÍ¾ |
+| å°ºå¯¸ | æ¯”ä¾‹ | ç”¨é€” |
 |------|------|------|
-| 2752¡Á1536 | 16:9 | ¿íÆÁÕ¹Ê¾£¨Ä¬ÈÏ£© |
-| 2496¡Á1664 | 3:2 | ºá°æº£±¨ |
-| 1664¡Á2496 | 2:3 | Êú°æº£±¨ |
-| 2048¡Á2048 | 1:1 | ·½ĞÎÍ¼ |
-| 1536¡Á2752 | 9:16 | ÊÖ»úÊúÆÁ |
-| 3072¡Á1376 | 21:9 | ³¬¿íÆÁ |
+| 2752x1536 | 16:9 | å®½å±å±•ç¤ºï¼ˆé»˜è®¤ï¼‰ |
+| 2496x1664 | 3:2 | æ¨ªç‰ˆæµ·æŠ¥ |
+| 1664x2496 | 2:3 | ç«–ç‰ˆæµ·æŠ¥ |
+| 2048x2048 | 1:1 | æ–¹å½¢å›¾ |
+| 1536x2752 | 9:16 | æ‰‹æœºç«–å± |
+| 3072x1376 | 21:9 | è¶…å®½å± |
 
 ---
 
-## ?? API ½Ó¿Ú
+## API æ¥å£
 
 ### POST /api/generate
 
-Éú³ÉĞÅÏ¢Í¼¡£
+ç”Ÿæˆä¿¡æ¯å›¾ã€‚
 
-**ÇëÇóÍ·£º**
+**è¯·æ±‚å¤´ï¼š**
 `
 Content-Type: application/json
 `
 
-**ÇëÇóÌå£º**
+**è¯·æ±‚ä½“ï¼š**
 `json
 {
-  "prompt": "Í¼ÏñÃèÊöÎÄ±¾£¨±ØÌî£¬×î´ó 4096 tokens£©",
-  "size": "2752x1536",  // ¿ÉÑ¡£¬Ä¬ÈÏÖµ
-  "n": 1                 // ¿ÉÑ¡£¬Éú³ÉÊıÁ¿
+  "prompt": "å›¾åƒæè¿°æ–‡æœ¬ï¼ˆå¿…å¡«ï¼Œæœ€å¤§ 4096 tokensï¼‰",
+  "size": "2752x1536",  // å¯é€‰ï¼Œé»˜è®¤å€¼
+  "n": 1                 // å¯é€‰ï¼Œç”Ÿæˆæ•°é‡
 }
 `
 
-**ÏìÓ¦Ê¾Àı£º**
+**å“åº”ç¤ºä¾‹ï¼š**
 `json
 {
   "created": 1713167890,
@@ -200,9 +200,9 @@ Content-Type: application/json
 
 ### GET /health
 
-½¡¿µ¼ì²é½Ó¿Ú¡£
+å¥åº·æ£€æŸ¥æ¥å£ã€‚
 
-**ÏìÓ¦£º**
+**å“åº”ï¼š**
 `json
 {
   "status": "ok",
@@ -212,48 +212,48 @@ Content-Type: application/json
 
 ---
 
-## ?? »ñÈ¡ API Key
+## è·å– API Key
 
-1. ·ÃÎÊ [platform.sensenova.cn](https://platform.sensenova.cn)
-2. µÇÂ¼ÕË»§
-3. ½øÈë **API ¹ÜÀí** »ò **¿ª·¢ÕßÉèÖÃ**
-4. ´´½¨/¸´ÖÆ API Key
+1. è®¿é—® [platform.sensenova.cn](https://platform.sensenova.cn)
+2. ç™»å½•è´¦æˆ·
+3. è¿›å…¥ **API ç®¡ç†** æˆ– **å¼€å‘è€…è®¾ç½®**
+4. åˆ›å»º/å¤åˆ¶ API Key
 
 ---
 
-## ?? ¼¼ÊõÕ»
+## æŠ€æœ¯æ ˆ
 
-| ×é¼ş | ¼¼Êõ |
+| ç»„ä»¶ | æŠ€æœ¯ |
 |------|------|
-| Ç°¶Ë | Ô­Éú HTML/CSS/JavaScript |
-| ºó¶Ë | Cloudflare Workers (JavaScript) |
+| å‰ç«¯ | åŸç”Ÿ HTML/CSS/JavaScript |
+| åç«¯ | Cloudflare Workers (JavaScript) |
 | API | SenseNova U1 Fast |
-| ²¿Êğ | Cloudflare Workers / Pages |
+| éƒ¨ç½² | Cloudflare Workers / Pages |
 
 ---
 
-## ?? ×¢ÒâÊÂÏî
+## æ³¨æ„äº‹é¡¹
 
-1. **API Key °²È«** - ÓÀÔ¶²»Òª½« API Key Ó²±àÂëÔÚ´úÂëÖĞ
-2. **ËÙÂÊÏŞÖÆ** - SenseNova API ¿ÉÄÜÓĞµ÷ÓÃÆµÂÊÏŞÖÆ
-3. **Éú³ÉÊ±¼ä** - Í¼ÏñÉú³ÉÍ¨³£ĞèÒª 10-30 Ãë
-4. **ÌáÊ¾´Ê³¤¶È** - ×î´óÖ§³Ö 4096 tokens
+1. **API Key å®‰å…¨** - æ°¸è¿œä¸è¦å°† API Key ç¡¬ç¼–ç åœ¨ä»£ç ä¸­
+2. **é€Ÿç‡é™åˆ¶** - SenseNova API å¯èƒ½æœ‰è°ƒç”¨é¢‘ç‡é™åˆ¶
+3. **ç”Ÿæˆæ—¶é—´** - å›¾åƒç”Ÿæˆé€šå¸¸éœ€è¦ 10-30 ç§’
+4. **æç¤ºè¯é•¿åº¦** - æœ€å¤§æ”¯æŒ 4096 tokens
 
 ---
 
-## ?? Ğí¿ÉÖ¤
+## è®¸å¯è¯
 
 MIT License
 
 ---
 
-## ?? Ïà¹ØÁ´½Ó
+## ç›¸å…³é“¾æ¥
 
-- [SenseNova Æ½Ì¨ÎÄµµ](https://platform.sensenova.cn/docs)
-- [Cloudflare Workers ÎÄµµ](https://developers.cloudflare.com/workers/)
-- [Wrangler CLI ÎÄµµ](https://developers.cloudflare.com/workers/wrangler/)
-- [Cloudflare Pages ÎÄµµ](https://developers.cloudflare.com/pages/)
+- [SenseNova å¹³å°æ–‡æ¡£](https://platform.sensenova.cn/docs)
+- [Cloudflare Workers æ–‡æ¡£](https://developers.cloudflare.com/workers/)
+- [Wrangler CLI æ–‡æ¡£](https://developers.cloudflare.com/workers/wrangler/)
+- [Cloudflare Pages æ–‡æ¡£](https://developers.cloudflare.com/pages/)
 
 ---
 
-**Made with ?? by SenseNova U1 Fast**
+**Made with love by SenseNova U1 Fast**
