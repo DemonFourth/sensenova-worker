@@ -70,11 +70,11 @@ async function handleGenerate(request, env) {
     }
 
     // µ÷ÓÃ SenseNova U1 Fast API
-    const response = await fetch(${SENSENOVA_BASE_URL}/images/generations, {
+    const response = await fetch(`${SENSENOVA_BASE_URL}/images/generations`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": \Bearer \\,
+        "Authorization": `Bearer ${env.SENSENOVA_API_KEY}`,
       },
       body: JSON.stringify({
         model: "sensenova-u1-fast",
