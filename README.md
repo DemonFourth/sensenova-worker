@@ -23,7 +23,51 @@ sensenova-worker/
 
 ## 快速部署
 
-### 方式一：本地部署（推荐）
+### 方式一：Dashboard 直接部署（最简单）
+
+适合不想安装任何工具的用户。
+
+#### 1. 创建 Worker
+
+1. 访问 [dash.cloudflare.com](https://dash.cloudflare.com)
+2. 进入 **Workers & Pages** → **Create application** → **Create Worker**
+3. 输入 Worker 名称（如 sensenova-infographic）
+4. 点击 **Deploy**
+
+#### 2. 上传代码
+
+**方法 A：直接粘贴代码**
+
+1. 在 Worker 编辑页面，删除默认代码
+2. 打开本地文件 src/index.js，复制全部内容
+3. 粘贴到编辑区，点击 **Save and Deploy**
+
+**方法 B：上传文件**
+
+1. 在 Worker 页面，点击 **Settings** → **Resources** → **File binding**
+2. 添加文件绑定：
+   - **Name**: __STATIC_CONTENT
+   - **Type**: File
+   - **Path**: 选择 src/index.html
+3. 在代码中引用静态文件（需要修改 index.js）
+
+#### 3. 配置环境变量
+
+1. 进入 Worker → **Settings** → **Variables**
+2. 添加变量：
+   - **Variable name**: SENSENOVA_API_KEY
+   - **Value**: 你的 SenseNova API Key
+3. 点击 **Save**
+
+#### 4. 测试
+
+访问 https://sensenova-infographic.your-subdomain.workers.dev
+
+---
+
+### 方式二：本地部署（推荐）
+
+适合需要版本控制和自动化部署的用户。
 
 #### 1. 前置准备
 
@@ -72,7 +116,9 @@ https://your-worker-name.your-subdomain.workers.dev
 
 ---
 
-### 方式二：GitHub + Cloudflare Pages
+### 方式三：GitHub + Cloudflare Pages
+
+适合需要 CI/CD 和自动部署的用户。
 
 #### 1. 推送到 GitHub
 
