@@ -1,5 +1,5 @@
-// SenseNova U1 Fast ÐÅÏ¢Í¼Éú³ÉÆ÷ - Cloudflare Worker
-// API ´úÀí + ¾²Ì¬Ò³ÃæÍÐ¹Ü
+ï»¿// SenseNova U1 Fast ï¿½ï¿½Ï¢Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Cloudflare Worker
+// API ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ì¬Ò³ï¿½ï¿½ï¿½Ð¹ï¿½
 
 const SENSENOVA_BASE_URL = "https://token.sensenova.cn/v1";
 
@@ -7,7 +7,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // CORS Ô¤¼ì
+    // CORS Ô¤ï¿½ï¿½
     if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: {
@@ -19,19 +19,19 @@ export default {
       });
     }
 
-    // API ´úÀíÂ·ÓÉ
+    // API ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
     if (url.pathname === "/api/generate" && request.method === "POST") {
       return handleGenerate(request, env);
     }
 
-    // ½¡¿µ¼ì²é
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (url.pathname === "/health") {
       return new Response(JSON.stringify({ status: "ok", service: "sensenova-infographic" }), {
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // ¾²Ì¬ÎÄ¼þÍÐ¹Ü
+    // ï¿½ï¿½Ì¬ï¿½Ä¼ï¿½ï¿½Ð¹ï¿½
     if (env.__STATIC_CONTENT) {
       let path = url.pathname;
       if (path === "/" || path === "/index.html") {
@@ -66,10 +66,10 @@ async function handleGenerate(request, env) {
     const { prompt, size = "2752x1536", n = 1 } = body;
 
     if (!prompt) {
-      return jsonResponse({ error: "prompt ÊÇ±ØÌî²ÎÊý" }, 400, corsHeaders);
+      return jsonResponse({ error: "prompt ï¿½Ç±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" }, 400, corsHeaders);
     }
 
-    // µ÷ÓÃ SenseNova U1 Fast API
+    // ï¿½ï¿½ï¿½ï¿½ SenseNova U1 Fast API
     const response = await fetch(`${SENSENOVA_BASE_URL}/images/generations`, {
       method: "POST",
       headers: {
@@ -87,7 +87,7 @@ async function handleGenerate(request, env) {
     if (!response.ok) {
       const errorText = await response.text();
       return jsonResponse(
-        { error: "API ÇëÇóÊ§°Ü", details: errorText, status: response.status },
+        { error: "API ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½", details: errorText, status: response.status },
         response.status,
         corsHeaders
       );
@@ -99,7 +99,7 @@ async function handleGenerate(request, env) {
   } catch (error) {
     console.error("Error:", error);
     return jsonResponse(
-      { error: "·þÎñÆ÷ÄÚ²¿´íÎó", message: error.message },
+      { error: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½", message: error.message },
       500,
       corsHeaders
     );
