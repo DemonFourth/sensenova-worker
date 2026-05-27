@@ -1,86 +1,86 @@
-// SenseNova U1 Fast Infographic Generator - Single File Version
+﻿// SenseNova U1 Fast Infographic Generator - Single File Version
 // For Cloudflare Dashboard direct deployment
 
 const SENSENOVA_BASE_URL = "https://token.sensenova.cn/v1";
 
 const PROMPT_TEMPLATES = [
   { id: "general", nameZh: "通用信息图", nameEn: "General",
-    prompt: `Create a professional general infographic / 通用信息图
+    prompt: `请生成一张专业通用信息图
 
-Layout: Bento Grid — modular grid with varied cell sizes. A large hero cell highlights the main topic, with supporting cells around. Clear cell boundaries with subtle rounded corners. Organic but balanced.
+布局：采用 Bento Grid 模块化网格布局，主标题占据最大的核心格子（hero cell），附属内容分布在周围小格子中。格子之间用圆角边框分隔。
 
-Style: Corporate Memphis — flat vector with vibrant geometric fills. Color palette: rich purple, warm orange, teal, golden yellow. White or light pastel background. Clean sans-serif with bold headings. Simple decorative elements.
+风格：Corporate Memphis 扁平矢量风格，配色以紫色、橙色、青色、金黄色为主。背景白色。标题加粗无衬线字体。包含简单装饰元素。
 
-Text: Chinese text in clean sans-serif. Bold headings. Concise body. Highlight key numbers. Ample whitespace.
+文字要求：所有中文文字使用清晰无衬线字体。标题加粗。正文简洁。关键数字放大加粗。
 
-Content to visualize:
-[在此输入你想展示的内容 / Enter your content here]` },
+内容：
+[在此输入你想展示的内容]` },
   { id: "comparison", nameZh: "对比分析", nameEn: "Comparison",
-    prompt: `Create a comparison infographic / 对比分析信息图
+    prompt: `请生成一张对比分析信息图
 
-Layout: Binary Comparison — vertical divider splits image into two mirrored halves. Left: Option A / Before / Pros. Right: Option B / After / Cons. Corresponding elements horizontally aligned. "VS" badge or gradient transition at center.
+布局：采用 Binary Comparison 左右对比布局，页面中间用竖线或渐变分割。左侧展示选项A/Before/优势，右侧展示选项B/After/劣势。两边元素水平对齐。
 
-Style: Professional Tech Brand — clean, minimalist, corporate. Left: cool blue. Right: warm coral. Light gray background. Modern sans-serif. Simple icon pairs per row.
+风格：专业科技品牌风格，干净简约。左侧冷蓝色调，右侧暖珊瑚色调。浅灰色背景。现代无衬线字体。每行对比配简单图标。
 
-Text: Main title centered at top. Side headers labeled. Key differences emphasized with color or bold.
+文字要求：顶部居中主标题。两侧标签清晰标注。关键差异用颜色或加粗强调。
 
-Content to compare:
-[在此输入要对比的两项内容 / Enter the two items to compare here]` },
+对比内容：
+[在此输入要对比的两项内容]` },
   { id: "timeline", nameZh: "时间线", nameEn: "Timeline",
-    prompt: `Create a timeline infographic / 时间线信息图
+    prompt: `请生成一张时间线信息图
 
-Layout: Linear Progression — events along a central path left-to-right or top-to-bottom. Circular nodes on path. Connecting arrows. Each node has date or sequence marker.
+布局：采用 Linear Progression 线性递进布局，事件沿一条从左到右或从上到下的路径排列。关键节点用圆形标记。路径用箭头连接。每个节点标注日期或序号。
 
-Style: Modern Editorial — warm gradient from deep blue through teal to amber. White background. Unique icons per node. Clean sans-serif with bold event titles.
+风格：现代编辑风，配色从深蓝渐变为青色再到琥珀色。白色背景。每个事件节点配独特图标。标题加粗无衬线字体。
 
-Text: Dates/numbers in prominent bold. Event titles in Chinese. Brief descriptions (1-2 lines). Main title at top.
+文字要求：日期/序号加粗突出。事件标题用中文。简要描述1-2行。顶部主标题。
 
-Timeline events (in order):
-[在此输入时间线内容 / Enter your timeline content here]` },
+时间线事件（按顺序）：
+[在此输入时间线内容]` },
   { id: "steps", nameZh: "步骤流程", nameEn: "Steps",
-    prompt: `Create a step-by-step guide infographic / 步骤流程信息图
+    prompt: `请生成一张步骤流程信息图
 
-Layout: Step Staircase — numbered steps in staircase pattern. Each step: number left, icon middle, description right. Steps connected by arrows.
+布局：采用 Step Staircase 阶梯式布局，编号步骤按阶梯排列。每一步为一个区块：左侧大号步骤编号，中间图标，右侧说明。步骤之间用箭头连接。
 
-Style: Instructional Guide — assembly-manual inspired. Deep navy headers, warm amber icons, white background. Simple line-art icons. High contrast. Sans-serif.
+风格：说明书风格，深蓝色标题，暖琥珀色图标，白色背景。简单线条图标。高对比度。无衬线字体。
 
-Text: Step numbers large and bold. Step titles in Chinese. One-line description below. Final step larger for completion emphasis.
+文字要求：步骤编号超大加粗。步骤标题用中文。下方一行说明。最后一步稍大表示完成。
 
-Steps (in order):
-[在此输入步骤内容 / Enter your step-by-step content here]` },
+步骤（按顺序）：
+[在此输入步骤内容]` },
   { id: "dataviz", nameZh: "数据看板", nameEn: "Dashboard",
-    prompt: `Create a data dashboard infographic / 数据看板信息图
+    prompt: `请生成一张数据看板信息图
 
-Layout: Dashboard — data-intensive layout. Top: 2-4 key metrics in callout cards. Middle: primary chart (bar/line/pie). Bottom: secondary data. Clean, organized.
+布局：采用 Dashboard 数据面板布局。顶部2-4个关键指标大号卡片。中部主图表（柱状图/折线图/饼图）。底部次要数据和标注。
 
-Style: Data Viz — analytical aesthetic. Dark navy background. Data series in cyan, lime green, amber, coral. White/gray text. Precise grid lines. Marked data points.
+风格：数据分析风，深蓝色背景。数据系列用青色、黄绿色、琥珀色、珊瑚色。文字用白色/浅灰色。精确网格线。数据点清晰标注。
 
-Text: Big numbers in extra-large bold. Labels and axis titles in Chinese. Legends positioned. Main title at top.
+文字要求：大数字用超大加粗字体。标签和坐标轴标题用中文。图例清晰。顶部主标题。
 
-Data to visualize:
-[在此输入要可视化的数据 / Enter your data to visualize here]` },
+要可视化的数据：
+[在此输入要可视化的数据]` },
   { id: "hub", nameZh: "中心辐射图", nameEn: "Hub & Spoke",
-    prompt: `Create a hub-and-spoke infographic / 中心辐射信息图
+    prompt: `请生成一张中心辐射信息图
 
-Layout: Hub & Spoke — central hub with core theme. Spoke lines radiate to 4-6 surrounding nodes. Even distribution around hub.
+布局：采用 Hub & Spoke 中心辐射布局。中央圆形枢纽为核心主题。辐射线连接到4-6个外围节点，每个节点为相关子概念。节点均匀分布。
 
-Style: Flat & Playful — colorful flat design. Central hub: deep violet. Nodes: rainbow of blue, green, yellow, orange, pink. White background. Simple flat icons. Rounded shapes. Clean sans-serif.
+风格：扁平多彩风格，中心枢纽为深紫或翡翠绿。外围节点用蓝、绿、黄、橙、粉色。白色背景。简单扁平图标。圆角造型。干净无衬线字体。
 
-Text: Central hub text in Chinese, bold, centered. Each node with label and one-line description. Main title at top.
+文字要求：中心文字用中文加粗居中。每个节点有标签和一行描述。顶部主标题。
 
-Central topic and related items:
-[在此输入中心主题和相关内容 / Enter the central topic and related items here]` },
+中心主题和相关内容：
+[在此输入中心主题和相关内容]` },
   { id: "tech", nameZh: "科技风格", nameEn: "Tech Style",
-    prompt: `Create a technology-themed infographic / 科技风信息图
+    prompt: `请生成一张科技风信息图
 
-Layout: Bento Grid with Asymmetric Composition — full-width dark background. Asymmetric cells. Hero cell for headline. Glass-morphism effect (semi-transparent with blur).
+布局：采用非对称 Bento Grid 布局，全宽深色背景。网格区块大小不一非对称排列。主标题占据最大突出区块。区块背景采用毛玻璃效果。
 
-Style: Futuristic Tech — midnight blue-black background. Cyan/electric blue primary. Neon pink/magenta secondary. Glass-morphism panels with border glow. Geometric grid lines. Gradient text. Glow effects on data.
+风格：未来科技风，午夜蓝黑背景，青蓝色主调，霓虹粉辅助色。毛玻璃面板带发光边框。细几何网格线。标题渐变文字。数据点发光效果。
 
-Text: Headline in bold white with cyan gradient. Body in light gray. Numbers in glowing cyan/pink. Ensure contrast against dark background.
+文字要求：主标题用带青色渐变的加粗白色。正文浅灰色。重要数字用发光青蓝或品红色。确保暗色背景下的对比度。
 
-Content:
-[在此输入你想展示的内容 / Enter your content here]` }
+内容：
+[在此输入你想展示的内容]` }
 ];
 
 const HTML_PAGE = `<!DOCTYPE html>
@@ -91,76 +91,94 @@ const HTML_PAGE = `<!DOCTYPE html>
   <title>SenseNova U1 Fast - Infographic Generator</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem; color: #333; }
-    .container { max-width: 900px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 2rem; color: white; }
-    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    header p { font-size: 1.1rem; opacity: 0.9; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 1.5rem; color: #333; }
     .lang-switch { position: absolute; top: 1rem; right: 1rem; }
-    .lang-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+    .lang-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
     .lang-btn:hover { background: rgba(255,255,255,0.3); }
-    .card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-    .form-group { margin-bottom: 1.5rem; }
-    label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555; }
-    textarea { width: 100%; min-height: 180px; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; font-family: inherit; resize: vertical; }
+    header { text-align: center; margin-bottom: 1.5rem; color: white; padding-top: 0.5rem; }
+    header h1 { font-size: 2rem; margin-bottom: 0.3rem; }
+    header p { font-size: 1rem; opacity: 0.9; }
+    .main-layout { display: flex; gap: 1.5rem; align-items: flex-start; max-width: 1400px; margin: 0 auto; }
+    .left-panel { width: 420px; flex-shrink: 0; }
+    .right-panel { flex: 1; min-width: 0; }
+    .card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: #555; font-size: 0.9rem; }
+    textarea { width: 100%; min-height: 280px; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 0.9rem; font-family: inherit; resize: vertical; }
     textarea:focus { outline: none; border-color: #667eea; }
-    .size-selector { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    .size-option { padding: 0.75rem 1.25rem; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
-    .size-option:hover { border-color: #667eea; }
-    .size-option.selected { background: #667eea; color: white; border-color: #667eea; }
-    button { width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .result-section { display: none; }
-    .result-section.show { display: block; }
-    .loading { text-align: center; padding: 2rem; color: #667eea; }
-    .loading-spinner { width: 40px; height: 40px; border: 4px solid #f0f0f0; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .image-result { text-align: center; }
-    .image-result img { max-width: 100%; border-radius: 10px; }
-    .image-url { margin-top: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 8px; word-break: break-all; font-family: monospace; font-size: 0.9rem; }
-    .error { background: #fee; border: 1px solid #fcc; color: #c00; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-    .hint { font-size: 0.85rem; color: #888; margin-top: 0.5rem; }
-    .api-info { font-size: 0.8rem; color: #999; text-align: center; margin-top: 1rem; }
-    .template-section { margin-bottom: 1.5rem; }
-    .template-grid { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .template-chip { padding: 0.4rem 0.9rem; border: 2px solid #e0e0e0; border-radius: 20px; cursor: pointer; font-size: 0.85rem; background: white; transition: all 0.2s; white-space: nowrap; }
+    .template-grid { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .template-chip { padding: 0.3rem 0.7rem; border: 1.5px solid #e0e0e0; border-radius: 14px; cursor: pointer; font-size: 0.78rem; background: white; transition: all 0.15s; white-space: nowrap; }
     .template-chip:hover { border-color: #667eea; background: #f0f0ff; }
     .template-chip.selected { background: #667eea; color: white; border-color: #667eea; }
+    .size-selector, .count-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .size-option, .count-option { padding: 0.5rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: all 0.15s; }
+    .size-option:hover, .count-option:hover { border-color: #667eea; }
+    .size-option.selected, .count-option.selected { background: #667eea; color: white; border-color: #667eea; }
+    .generate-btn { width: 100%; padding: 0.8rem 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
+    .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .result-section { display: none; min-height: 400px; }
+    .result-section.show { display: block; }
+    .loading { text-align: center; padding: 3rem; color: #667eea; }
+    .loading-spinner { width: 36px; height: 36px; border: 4px solid #f0f0f0; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 0.8rem; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .image-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .image-grid.single { grid-template-columns: 1fr; }
+    .image-item { text-align: center; }
+    .image-item img { max-width: 100%; border-radius: 10px; }
+    .image-item .image-url { margin-top: 0.5rem; padding: 0.5rem; background: #f5f5f5; border-radius: 8px; word-break: break-all; font-family: monospace; font-size: 0.8rem; }
+    .image-item .image-url a { color: #667eea; text-decoration: none; }
+    .image-item .image-url a:hover { text-decoration: underline; }
+    .error { background: #fee; border: 1px solid #fcc; color: #c00; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+    .hint { font-size: 0.8rem; color: #888; margin-top: 0.3rem; }
+    @media (max-width: 960px) { .main-layout { flex-direction: column; } .left-panel { width: 100%; } .right-panel { width: 100%; } .image-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="lang-switch">
-      <button class="lang-btn" onclick="toggleLang()">EN / 中文</button>
-    </div>
-    <header><h1 data-i18n="title">SenseNova U1 Fast</h1><p data-i18n="subtitle">Infographic Generator</p></header>
-    <div class="card">
-      <div class="form-group">
-        <label data-i18n="promptLabel">Prompt</label>
-        <textarea id="prompt" data-i18n-placeholder="promptPlaceholder" placeholder="Describe the infographic you want to generate..."></textarea>
-        <p class="hint" data-i18n="promptHint">Max 4096 tokens</p>
-      </div>
-      <div class="form-group">
-        <label data-i18n="templateLabel">Template</label>
-        <div class="template-grid" id="templateGrid"></div>
-      </div>
-      <div class="form-group">
-        <label data-i18n="sizeLabel">Size</label>
-        <div class="size-selector" id="sizeSelector">
-          <div class="size-option selected" data-size="2752x1536" data-i18n="size1">16:9</div>
-          <div class="size-option" data-size="2496x1664" data-i18n="size2">3:2</div>
-          <div class="size-option" data-size="1664x2496" data-i18n="size3">2:3</div>
-          <div class="size-option" data-size="2048x2048" data-i18n="size4">1:1</div>
-          <div class="size-option" data-size="1536x2752" data-i18n="size5">9:16</div>
+  <div class="lang-switch">
+    <button class="lang-btn" onclick="toggleLang()">EN / 中文</button>
+  </div>
+  <header><h1 data-i18n="title">SenseNova U1 Fast</h1><p data-i18n="subtitle">Infographic Generator</p></header>
+  <div class="main-layout">
+    <div class="left-panel">
+      <div class="card">
+        <div class="form-group">
+          <label data-i18n="promptLabel">Prompt</label>
+          <textarea id="prompt" data-i18n-placeholder="promptPlaceholder" placeholder="Describe the infographic..."></textarea>
+          <p class="hint" data-i18n="promptHint">Max 4096 tokens</p>
         </div>
+        <div class="form-group">
+          <label data-i18n="templateLabel">Template</label>
+          <div class="template-grid" id="templateGrid"></div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="sizeLabel">Size</label>
+          <div class="size-selector" id="sizeSelector">
+            <div class="size-option selected" data-size="2752x1536" data-i18n="size1">16:9</div>
+            <div class="size-option" data-size="2496x1664" data-i18n="size2">3:2</div>
+            <div class="size-option" data-size="1664x2496" data-i18n="size3">2:3</div>
+            <div class="size-option" data-size="2048x2048" data-i18n="size4">1:1</div>
+            <div class="size-option" data-size="1536x2752" data-i18n="size5">9:16</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="countLabel">Count</label>
+          <div class="count-selector" id="countSelector">
+            <div class="count-option selected" data-count="1">1</div>
+            <div class="count-option" data-count="2">2</div>
+            <div class="count-option" data-count="3">3</div>
+            <div class="count-option" data-count="4">4</div>
+          </div>
+        </div>
+        <button class="generate-btn" id="generateBtn" data-i18n="generateBtn" onclick="generate()">Generate</button>
       </div>
-      <button id="generateBtn" data-i18n="generateBtn" onclick="generate()">Generate</button>
     </div>
-    <div class="card result-section" id="resultSection">
-      <h2 style="margin-bottom: 1rem;" data-i18n="resultTitle">Result</h2>
-      <div id="loading" class="loading"><div class="loading-spinner"></div><p data-i18n="generating">Generating...</p></div>
-      <div id="imageResult" class="image-result" style="display: none;"><img id="generatedImage" src="" alt="Generated"><div class="image-url"><a id="imageUrl" href="" target="_blank"></a></div></div>
-      <div id="errorResult" class="error" style="display: none;"></div>
+    <div class="right-panel">
+      <div class="card result-section" id="resultSection">
+        <h2 style="margin-bottom:0.8rem;" data-i18n="resultTitle">Result</h2>
+        <div id="loading" class="loading"><div class="loading-spinner"></div><p data-i18n="generating">Generating...</p></div>
+        <div id="imageResult" class="image-result" style="display:none;"><div class="image-grid" id="imageGrid"></div></div>
+        <div id="errorResult" class="error" style="display:none;"></div>
+      </div>
     </div>
   </div>
   <script>
@@ -174,11 +192,8 @@ const HTML_PAGE = `<!DOCTYPE html>
         promptHint: 'Max 4096 tokens',
         sizeLabel: 'Size',
         templateLabel: 'Template',
-        size1: '16:9',
-        size2: '3:2',
-        size3: '2:3',
-        size4: '1:1',
-        size5: '9:16',
+        countLabel: 'Count',
+        size1: '16:9', size2: '3:2', size3: '2:3', size4: '1:1', size5: '9:16',
         generateBtn: 'Generate',
         resultTitle: 'Result',
         generating: 'Generating...'
@@ -191,11 +206,8 @@ const HTML_PAGE = `<!DOCTYPE html>
         promptHint: '最大支持 4096 tokens',
         sizeLabel: '图像尺寸',
         templateLabel: '模板',
-        size1: '16:9',
-        size2: '3:2',
-        size3: '2:3',
-        size4: '1:1',
-        size5: '9:16',
+        countLabel: '生成数量',
+        size1: '16:9', size2: '3:2', size3: '2:3', size4: '1:1', size5: '9:16',
         generateBtn: '生成信息图',
         resultTitle: '生成结果',
         generating: '正在生成...'
@@ -204,6 +216,7 @@ const HTML_PAGE = `<!DOCTYPE html>
 
     let currentLang = 'zh';
     let selectedSize = '2752x1536';
+    let selectedCount = 1;
 
     function toggleLang() {
       currentLang = currentLang === 'en' ? 'zh' : 'en';
@@ -232,6 +245,13 @@ const HTML_PAGE = `<!DOCTYPE html>
         selectedSize = opt.dataset.size;
       });
     });
+    document.querySelectorAll('.count-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.count-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedCount = parseInt(opt.dataset.count);
+      });
+    });
 
     async function generate() {
       const prompt = document.getElementById('prompt').value.trim();
@@ -239,6 +259,7 @@ const HTML_PAGE = `<!DOCTYPE html>
       const resultSection = document.getElementById('resultSection');
       const loading = document.getElementById('loading');
       const imageResult = document.getElementById('imageResult');
+      const imageGrid = document.getElementById('imageGrid');
       const errorResult = document.getElementById('errorResult');
       if (!prompt) { alert(currentLang === 'zh' ? '请输入提示词！' : 'Please enter a prompt!'); return; }
       resultSection.classList.add('show');
@@ -251,15 +272,20 @@ const HTML_PAGE = `<!DOCTYPE html>
         const response = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, size: selectedSize, n: 1 }),
+          body: JSON.stringify({ prompt, size: selectedSize, n: selectedCount }),
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed');
-        const imageUrl = data.data?.[0]?.url;
-        if (!imageUrl) throw new Error('No URL returned');
-        document.getElementById('generatedImage').src = imageUrl;
-        document.getElementById('imageUrl').href = imageUrl;
-        document.getElementById('imageUrl').textContent = imageUrl;
+        const images = data.data || [];
+        if (images.length === 0) throw new Error('No URLs returned');
+        imageGrid.innerHTML = '';
+        imageGrid.className = 'image-grid' + (images.length === 1 ? ' single' : '');
+        images.forEach(img => {
+          const item = document.createElement('div');
+          item.className = 'image-item';
+          item.innerHTML = '<img src="' + img.url + '" alt="Generated"><div class="image-url"><a href="' + img.url + '" target="_blank">' + img.url + '</a></div>';
+          imageGrid.appendChild(item);
+        });
         loading.style.display = 'none';
         imageResult.style.display = 'block';
       } catch (e) {
@@ -359,14 +385,14 @@ async function handleGenerate(request, env) {
     // Auto-optimize for Chinese text rendering
     const hasChinese = /[\u4e00-\u9fff]/.test(prompt);
     const optimizedPrompt = hasChinese
-      ? prompt + `\n\n[CRITICAL: Chinese Text Rendering]\nAll Chinese text in this infographic must be rendered clearly and correctly.\n- Every Chinese character must be properly formed — NO garbled text, mojibake, or incorrect glyphs\n- Use clean sans-serif Chinese fonts for all Chinese text elements\n- Ensure proper character spacing and vertical alignment\n- 非常重要：信息图中所有中文文字必须清晰正确渲染，绝对不能出现乱码或方块字符`
+      ? prompt + '\n\n[CRITICAL: Chinese Text Rendering]\nAll Chinese text in this infographic must be rendered clearly and correctly.\n- Every Chinese character must be properly formed - NO garbled text, mojibake, or incorrect glyphs\n- Use clean sans-serif Chinese fonts for all Chinese text elements\n- Ensure proper character spacing and vertical alignment\n- 非常重要：信息图中所有中文文字必须清晰正确渲染，绝对不能出现乱码或方块字符'
       : prompt;
 
-    const response = await fetch(`${SENSENOVA_BASE_URL}/images/generations`, {
+    const response = await fetch(SENSENOVA_BASE_URL + '/images/generations', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.SENSENOVA_API_KEY}`,
+        "Authorization": 'Bearer ' + env.SENSENOVA_API_KEY,
       },
       body: JSON.stringify({ model: "sensenova-u1-fast", prompt: optimizedPrompt, size, n }),
     });
