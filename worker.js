@@ -3,6 +3,86 @@
 
 const SENSENOVA_BASE_URL = "https://token.sensenova.cn/v1";
 
+const PROMPT_TEMPLATES = [
+  { id: "general", nameZh: "通用信息图", nameEn: "General",
+    prompt: `Create a professional general infographic / 通用信息图
+
+Layout: Bento Grid — modular grid with varied cell sizes. A large hero cell highlights the main topic, with supporting cells around. Clear cell boundaries with subtle rounded corners. Organic but balanced.
+
+Style: Corporate Memphis — flat vector with vibrant geometric fills. Color palette: rich purple, warm orange, teal, golden yellow. White or light pastel background. Clean sans-serif with bold headings. Simple decorative elements.
+
+Text: Chinese text in clean sans-serif. Bold headings. Concise body. Highlight key numbers. Ample whitespace.
+
+Content to visualize:
+[在此输入你想展示的内容 / Enter your content here]` },
+  { id: "comparison", nameZh: "对比分析", nameEn: "Comparison",
+    prompt: `Create a comparison infographic / 对比分析信息图
+
+Layout: Binary Comparison — vertical divider splits image into two mirrored halves. Left: Option A / Before / Pros. Right: Option B / After / Cons. Corresponding elements horizontally aligned. "VS" badge or gradient transition at center.
+
+Style: Professional Tech Brand — clean, minimalist, corporate. Left: cool blue. Right: warm coral. Light gray background. Modern sans-serif. Simple icon pairs per row.
+
+Text: Main title centered at top. Side headers labeled. Key differences emphasized with color or bold.
+
+Content to compare:
+[在此输入要对比的两项内容 / Enter the two items to compare here]` },
+  { id: "timeline", nameZh: "时间线", nameEn: "Timeline",
+    prompt: `Create a timeline infographic / 时间线信息图
+
+Layout: Linear Progression — events along a central path left-to-right or top-to-bottom. Circular nodes on path. Connecting arrows. Each node has date or sequence marker.
+
+Style: Modern Editorial — warm gradient from deep blue through teal to amber. White background. Unique icons per node. Clean sans-serif with bold event titles.
+
+Text: Dates/numbers in prominent bold. Event titles in Chinese. Brief descriptions (1-2 lines). Main title at top.
+
+Timeline events (in order):
+[在此输入时间线内容 / Enter your timeline content here]` },
+  { id: "steps", nameZh: "步骤流程", nameEn: "Steps",
+    prompt: `Create a step-by-step guide infographic / 步骤流程信息图
+
+Layout: Step Staircase — numbered steps in staircase pattern. Each step: number left, icon middle, description right. Steps connected by arrows.
+
+Style: Instructional Guide — assembly-manual inspired. Deep navy headers, warm amber icons, white background. Simple line-art icons. High contrast. Sans-serif.
+
+Text: Step numbers large and bold. Step titles in Chinese. One-line description below. Final step larger for completion emphasis.
+
+Steps (in order):
+[在此输入步骤内容 / Enter your step-by-step content here]` },
+  { id: "dataviz", nameZh: "数据看板", nameEn: "Dashboard",
+    prompt: `Create a data dashboard infographic / 数据看板信息图
+
+Layout: Dashboard — data-intensive layout. Top: 2-4 key metrics in callout cards. Middle: primary chart (bar/line/pie). Bottom: secondary data. Clean, organized.
+
+Style: Data Viz — analytical aesthetic. Dark navy background. Data series in cyan, lime green, amber, coral. White/gray text. Precise grid lines. Marked data points.
+
+Text: Big numbers in extra-large bold. Labels and axis titles in Chinese. Legends positioned. Main title at top.
+
+Data to visualize:
+[在此输入要可视化的数据 / Enter your data to visualize here]` },
+  { id: "hub", nameZh: "中心辐射图", nameEn: "Hub & Spoke",
+    prompt: `Create a hub-and-spoke infographic / 中心辐射信息图
+
+Layout: Hub & Spoke — central hub with core theme. Spoke lines radiate to 4-6 surrounding nodes. Even distribution around hub.
+
+Style: Flat & Playful — colorful flat design. Central hub: deep violet. Nodes: rainbow of blue, green, yellow, orange, pink. White background. Simple flat icons. Rounded shapes. Clean sans-serif.
+
+Text: Central hub text in Chinese, bold, centered. Each node with label and one-line description. Main title at top.
+
+Central topic and related items:
+[在此输入中心主题和相关内容 / Enter the central topic and related items here]` },
+  { id: "tech", nameZh: "科技风格", nameEn: "Tech Style",
+    prompt: `Create a technology-themed infographic / 科技风信息图
+
+Layout: Bento Grid with Asymmetric Composition — full-width dark background. Asymmetric cells. Hero cell for headline. Glass-morphism effect (semi-transparent with blur).
+
+Style: Futuristic Tech — midnight blue-black background. Cyan/electric blue primary. Neon pink/magenta secondary. Glass-morphism panels with border glow. Geometric grid lines. Gradient text. Glow effects on data.
+
+Text: Headline in bold white with cyan gradient. Body in light gray. Numbers in glowing cyan/pink. Ensure contrast against dark background.
+
+Content:
+[在此输入你想展示的内容 / Enter your content here]` }
+];
+
 const HTML_PAGE = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -41,6 +121,11 @@ const HTML_PAGE = `<!DOCTYPE html>
     .error { background: #fee; border: 1px solid #fcc; color: #c00; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
     .hint { font-size: 0.85rem; color: #888; margin-top: 0.5rem; }
     .api-info { font-size: 0.8rem; color: #999; text-align: center; margin-top: 1rem; }
+    .template-section { margin-bottom: 1.5rem; }
+    .template-grid { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .template-chip { padding: 0.4rem 0.9rem; border: 2px solid #e0e0e0; border-radius: 20px; cursor: pointer; font-size: 0.85rem; background: white; transition: all 0.2s; white-space: nowrap; }
+    .template-chip:hover { border-color: #667eea; background: #f0f0ff; }
+    .template-chip.selected { background: #667eea; color: white; border-color: #667eea; }
   </style>
 </head>
 <body>
@@ -54,6 +139,10 @@ const HTML_PAGE = `<!DOCTYPE html>
         <label data-i18n="promptLabel">Prompt</label>
         <textarea id="prompt" data-i18n-placeholder="promptPlaceholder" placeholder="Describe the infographic you want to generate..."></textarea>
         <p class="hint" data-i18n="promptHint">Max 4096 tokens</p>
+      </div>
+      <div class="form-group">
+        <label data-i18n="templateLabel">Template</label>
+        <div class="template-grid" id="templateGrid"></div>
       </div>
       <div class="form-group">
         <label data-i18n="sizeLabel">Size</label>
@@ -75,6 +164,7 @@ const HTML_PAGE = `<!DOCTYPE html>
     </div>
   </div>
   <script>
+    const promptTemplates = ${JSON.stringify(PROMPT_TEMPLATES)};
     const i18n = {
       en: {
         title: 'SenseNova U1 Fast',
@@ -83,6 +173,7 @@ const HTML_PAGE = `<!DOCTYPE html>
         promptPlaceholder: 'Describe the infographic you want to generate...',
         promptHint: 'Max 4096 tokens',
         sizeLabel: 'Size',
+        templateLabel: 'Template',
         size1: '16:9',
         size2: '3:2',
         size3: '2:3',
@@ -99,6 +190,7 @@ const HTML_PAGE = `<!DOCTYPE html>
         promptPlaceholder: '描述你想生成的信息图...',
         promptHint: '最大支持 4096 tokens',
         sizeLabel: '图像尺寸',
+        templateLabel: '模板',
         size1: '16:9',
         size2: '3:2',
         size3: '2:3',
@@ -117,6 +209,7 @@ const HTML_PAGE = `<!DOCTYPE html>
       currentLang = currentLang === 'en' ? 'zh' : 'en';
       document.documentElement.lang = currentLang;
       updateI18n();
+      updateTemplateLabels();
     }
 
     function updateI18n() {
@@ -131,6 +224,7 @@ const HTML_PAGE = `<!DOCTYPE html>
       });
     }
 
+    initTemplates();
     document.querySelectorAll('.size-option').forEach(opt => {
       opt.addEventListener('click', () => {
         document.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
@@ -176,6 +270,32 @@ const HTML_PAGE = `<!DOCTYPE html>
         btn.disabled = false;
         btn.textContent = currentLang === 'zh' ? '生成信息图' : 'Generate';
       }
+    }
+    function initTemplates() {
+      const grid = document.getElementById('templateGrid');
+      promptTemplates.forEach(t => {
+        const chip = document.createElement('div');
+        chip.className = 'template-chip';
+        chip.textContent = currentLang === 'zh' ? t.nameZh : t.nameEn;
+        chip.dataset.id = t.id;
+        chip.onclick = () => applyTemplate(t.id);
+        grid.appendChild(chip);
+      });
+    }
+
+    function applyTemplate(id) {
+      const t = promptTemplates.find(t => t.id === id);
+      if (!t) return;
+      document.querySelectorAll('.template-chip').forEach(c => c.classList.remove('selected'));
+      document.querySelector(\`.template-chip[data-id="\${id}"]\`).classList.add('selected');
+      document.getElementById('prompt').value = t.prompt;
+    }
+
+    function updateTemplateLabels() {
+      document.querySelectorAll('.template-chip').forEach(chip => {
+        const t = promptTemplates.find(t => t.id === chip.dataset.id);
+        if (t) chip.textContent = currentLang === 'zh' ? t.nameZh : t.nameEn;
+      });
     }
   </script>
 </body>
@@ -236,13 +356,19 @@ async function handleGenerate(request, env) {
       });
     }
 
+    // Auto-optimize for Chinese text rendering
+    const hasChinese = /[\u4e00-\u9fff]/.test(prompt);
+    const optimizedPrompt = hasChinese
+      ? prompt + `\n\n[CRITICAL: Chinese Text Rendering]\nAll Chinese text in this infographic must be rendered clearly and correctly.\n- Every Chinese character must be properly formed — NO garbled text, mojibake, or incorrect glyphs\n- Use clean sans-serif Chinese fonts for all Chinese text elements\n- Ensure proper character spacing and vertical alignment\n- 非常重要：信息图中所有中文文字必须清晰正确渲染，绝对不能出现乱码或方块字符`
+      : prompt;
+
     const response = await fetch(`${SENSENOVA_BASE_URL}/images/generations`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.SENSENOVA_API_KEY}`,
       },
-      body: JSON.stringify({ model: "sensenova-u1-fast", prompt, size, n }),
+      body: JSON.stringify({ model: "sensenova-u1-fast", prompt: optimizedPrompt, size, n }),
     });
 
     if (!response.ok) {
